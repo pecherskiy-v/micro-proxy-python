@@ -1,3 +1,4 @@
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import ssl
 import requests
@@ -24,8 +25,12 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+    DEBUG_MODE = os.environ.get('DEBUG_MODE', 'False').lower() == 'true'
     httpd = HTTPServer(('0.0.0.0', 8443), ProxyHTTPRequestHandler)
-    httpd.socket = ssl.wrap_socket(httpd.socket, certfile='path/to/cert.pem', keyfile='path/to/privkey.pem',
-                                   server_side=True)
+
+    if not DEBUG_MODE:
+        httpd.socket = ssl.wrap_socket(httpd.socket, certfile='path/to/cert.pem', keyfile='path/to/privkey.pem',
+                                       server_side=True)
+
     print('Starting proxy...')
     httpd.serve_forever()

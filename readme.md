@@ -32,3 +32,9 @@
 Для Ubuntu создаем `proxy.service`:
 
 Для Alpine создаем файл `proxy` в `/etc/init.d/`:
+
+---
+
+```shell
+pip3 install Flask requests
+```

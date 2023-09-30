@@ -33,5 +33,10 @@ def api_proxy(subpath):
     # Возвращаем ответ
     return (response.content, response.status_code, response.headers.items())
 
+DEBUG_MODE = os.environ.get('DEBUG_MODE', 'False').lower() == 'true'
+
 if __name__ == '__main__':
-    app.run(port=LISTEN_PORT, ssl_context=(CERT_PATH, KEY_PATH))
+    if DEBUG_MODE:
+        app.run(port=LISTEN_PORT, debug=True)
+    else:
+        app.run(port=LISTEN_PORT, ssl_context=(CERT_PATH, KEY_PATH))
